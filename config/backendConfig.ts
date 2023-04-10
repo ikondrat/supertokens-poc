@@ -1,0 +1,46 @@
+import ThirdPartyEmailPasswordNode from "supertokens-node/recipe/thirdpartyemailpassword";
+import SessionNode from "supertokens-node/recipe/session";
+import Dashboard from "supertokens-node/recipe/dashboard";
+import { appInfo } from "./appInfo";
+import { AuthConfig } from "../interfaces";
+
+export let backendConfig = (): AuthConfig => {
+    return {
+        framework: "express",
+        supertokens: {
+            // this is the location of the SuperTokens core.
+            connectionURI: "https://dev-57a48871d45611ed91c2157b3f912564-eu-west-1.aws.supertokens.io:3569",
+            apiKey: "5bj6D6W-3MYAXE9BsKTc08ivS8BX8S",
+        },
+        appInfo,
+        // recipeList contains all the modules that you want to
+        // use from SuperTokens. See the full list here: https://supertokens.com/docs/guides
+        recipeList: [
+            ThirdPartyEmailPasswordNode.init({
+                providers: [
+                    // We have provided you with development keys which you can use for testing.
+                    // IMPORTANT: Please replace them with your own OAuth keys for production use.
+                    ThirdPartyEmailPasswordNode.Google({
+                        clientId: process.env.GOOGLE_CLIENT_ID,
+                        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                    }),
+                    ThirdPartyEmailPasswordNode.Github({
+                        clientId: process.env.GITHUB_CLIENT_ID,
+                        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+                    }),
+                    ThirdPartyEmailPasswordNode.Apple({
+                        clientId: process.env.APPLE_CLIENT_ID,
+                        clientSecret: {
+                            keyId: process.env.APPLE_KEY_ID,
+                            privateKey: process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+                            teamId: process.env.APPLE_TEAM_ID,
+                        },
+                    }),
+                ],
+            }),
+            SessionNode.init(),
+            Dashboard.init(),
+        ],
+        isInServerlessEnv: true,
+    };
+};
