@@ -9,8 +9,8 @@ export let backendConfig = (): AuthConfig => {
         framework: "express",
         supertokens: {
             // this is the location of the SuperTokens core.
-            connectionURI: "https://dev-57a48871d45611ed91c2157b3f912564-eu-west-1.aws.supertokens.io:3569",
-            apiKey: "5bj6D6W-3MYAXE9BsKTc08ivS8BX8S",
+            connectionURI: process.env.SP_CONNECTION_URI,
+            apiKey: process.env.SP_API_KEY,
         },
         appInfo,
         // recipeList contains all the modules that you want to
